@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "Markdown Syntax Preview"
-date: 2020-10-31
+date: 2021-10-21
 tags:
-  - Jekyll
-  - Markdown
+  -  Example Post
 author: Eric F.
 avatar: assets/img/common/ericf-avatar.png
 category: Example Posts
