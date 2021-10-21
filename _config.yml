@@ -18,16 +18,14 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: "Purelog: for Writers"
-email: mail@brennanbrown.ca
+title: Tix3Dev's Blog
+email: yves.vollmeier.code@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  A responsive sidebar Jekyll theme using the Pure.css framework, 
-  designed for writers and bloggers of all kinds.
+  A personal blog about all kinds of nerdy stuff :D
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://purelog.netlify.app" # the base hostname & protocol for your site, e.g. http://example.com
-repository: brennanbrown/purelog
-twitter: brennankbrown
-github: brennanbrown
+url: "https://tix3dev.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+repository: Tix3Dev/tix3dev.github.io 
+github: Tix3Dev
 
 header_image: assets/profile.png
 
@@ -35,14 +33,14 @@ google_analytics:
 comments: true
 disqus: purelog-jekyll
 
-author: Brennan K. Brown
+author: Yves Vollmeier
 author_bio: >-
-  Hey there! 😄 My name is Brennan, I'm a 25-year-old Métis web developer and 
-  content strategist from Winnipeg, Manitoba and currently reside in Calgary, 
-  Alberta. I've recently compeleted a Full Stack Developer Program at EvolveU, 
-  and I'm looking to help those that need web development work done, or 
-  searching for ideas and management for their next content project.
-author_pic: https://brennanbrown.ca/img/avatar.png
+  Hey there! 👋 My name is Yves aka Tix3Dev.<br/>
+  I am a 15 year old computer science/engineering enthusiast from Switzerland.<br/>
+  Currently I am really passionate about OSDev.<br/>
+  Actually, my interests aren't just limited to programming but rather STEM as a whole.<br/>
+author_pic: /assets/avatar.png
+
 paginate: 4
 paginate_path: "/:num/"
 
@@ -66,7 +64,7 @@ defaults:
       type: "posts" # previously `post` in Jekyll 2.2.
     values:
       layout: "post"
-      author: Brennan K. Brown
+      author: Yves Vollmeier
       avatar: assets/profile-sm.png
   - scope:
       path: ""
