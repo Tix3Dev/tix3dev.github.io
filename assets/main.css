@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Open+Sans:wght@400;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap');
 
 * {
   -webkit-box-sizing: border-box;
@@ -14,7 +14,7 @@ p,
 ul,
 ol,
 li {
-  font-family: "Lora", serif;
+  font-family: 'Fira Code', monospace;
 }
 
 a {
@@ -87,7 +87,7 @@ footer {
 }
 
 footer span {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Code", sans-serif;
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
@@ -124,7 +124,7 @@ footer .pure-menu-link:hover {
 }
 
 .sidebar-info * {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Code", sans-serif;
 }
 
 .brand-photo {
@@ -190,7 +190,7 @@ footer .pure-menu-link:hover {
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.1em;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Code", sans-serif;
 }
 
 .content {
@@ -214,7 +214,7 @@ footer .pure-menu-link:hover {
 }
 
 .post-header p {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Code", sans-serif;
   font-size: 18px;
   margin-top: -10px;
 }
@@ -248,7 +248,7 @@ footer .pure-menu-link:hover {
 }
 
 .post-meta {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Code", sans-serif;
   color: #444;
   margin: 0;
 }
@@ -429,7 +429,7 @@ footer ul {
 }
 
 .paginate * {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Code", sans-serif;
 }
 
 #current-page {
@@ -502,7 +502,7 @@ footer ul {
 #search,
 .search_res p,
 #results-container {
-  font-family: "Open Sans", sans-serif !important;
+  font-family: "Fira Code", sans-serif !important;
 }
 
 #results-container {
