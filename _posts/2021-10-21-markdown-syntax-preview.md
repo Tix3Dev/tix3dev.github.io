@@ -4,8 +4,8 @@ title: "Markdown Syntax Preview"
 date: 2021-10-21
 tags:
   -  Example Post
-author: Eric F.
-avatar: assets/img/common/ericf-avatar.png
+author: Yves Vollmeier
+avatar: assets/profile-sm.png
 category: Example Posts
 ---
 
