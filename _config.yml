@@ -27,7 +27,7 @@ url: "https://tix3dev.github.io/" # the base hostname & protocol for your site, 
 repository: Tix3Dev/tix3dev.github.io 
 github: Tix3Dev
 
-header_image: assets/profile.png
+header_image: assets/profile.gif
 
 google_analytics:
 comments: true
