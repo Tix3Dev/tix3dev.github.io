@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap');
 
+body {
+  background-color: #1f2430;  /* new */
+  color: #b3b1ad;
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -19,7 +24,7 @@ li {
 
 a {
   text-decoration: none;
-  color: rgb(61, 146, 201);
+  color: #53bdfa;  /* ok */
 }
 
 a:hover,
@@ -46,17 +51,17 @@ img {
 }
 
 mark {
-  background-color: #fffaa1;
+  background-color: #f9af4f;  /* done */
 }
 
 blockquote {
-  border-left: 2px #aaa solid;
+  border-left: 2px #fae994 solid;  /* done */
   padding-left: 7px;
   font-style: italic;
 }
 
 hr {
-  color: #ddd;
+  color: #b3b1ad;  /* done */
 }
 
 table {
@@ -65,16 +70,16 @@ table {
 
 td,
 th {
-  border: 1px solid #ddd;
+  border: 2px solid #f9af4f;  /* done */
   padding: 8px;
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #394152;  /* done - special color (lighter body background-color) */
 }
 
 tr:hover {
-  color: #666;
+  color: #0a0e14;  /* done */
 }
 
 th {
@@ -93,13 +98,17 @@ footer span {
   text-transform: uppercase;
 }
 
+.pure-menu-item {
+  color: #0a0e14;  /* new */
+}
+
 footer .pure-menu-link {
-  color: #444;
+  color: #0a0e14;  /* done */
 }
 
 footer .pure-menu-link:hover {
-  color: #111;
-  background-color: #fff;
+  color: #b3b1ad;  /* done */
+  background-color: transparent;  /* done */
   text-decoration: none;
 }
 
@@ -114,8 +123,8 @@ footer .pure-menu-link:hover {
 }
 
 .sidebar {
-  background: #222;
-  color: #fff;
+  background: #0a0e14; /* done */
+  color: #b3b1ad;  /* done */
 }
 
 .sidebar-info {
@@ -144,12 +153,12 @@ footer .pure-menu-link:hover {
 }
 
 .brand-title a {
-  color: white;
+  color: #cbccc6;  /* done */
 }
 
 .brand-tagline {
   font-weight: 300;
-  color: #ddd;
+  color: #b3b1ad;  /* done */
   font-size: 18px;
 }
 
@@ -167,8 +176,8 @@ footer .pure-menu-link:hover {
 
 .nav-item a {
   background: transparent;
-  border: 2px solid rgb(195, 176, 219);
-  color: #fff;
+  border: 2px solid #f9af4f;  /* done */
+  color: #cbccc6;  /* done */
   margin-top: 1em;
   margin-right: 5px;
   letter-spacing: 0.05em;
@@ -178,14 +187,14 @@ footer .pure-menu-link:hover {
 
 .nav-item a:hover,
 .nav-item a:focus {
-  border: 2px solid rgb(61, 70, 201);
+  border: 2px solid #b3b1ad;  /* done */
   text-decoration: none;
 }
 
 .content-subhead {
   text-transform: uppercase;
-  color: #333;
-  border-bottom: 1px solid #eee;
+  color: #b3b1ad;  /* done */
+  border-bottom: 1px solid #b3b1ad;  /* done */
   padding: 0.4em 0;
   font-size: 18px;
   font-weight: 400;
@@ -232,7 +241,7 @@ footer .pure-menu-link:hover {
 
 .post-title {
   font-size: 2em;
-  color: #222;
+  color: #53bdfa;  /* done */
   margin-bottom: 0.2em;
 }
 
@@ -249,16 +258,16 @@ footer .pure-menu-link:hover {
 
 .post-meta {
   font-family: "Fira Code", sans-serif;
-  color: #444;
+  color:#cbccc6;  /* done */
   margin: 0;
 }
 
 .post-meta a {
   font-weight: bold;
-  color: #376a8c;
+  color: #53bdfa;  /* done */
 }
 
-.post-category {
+.post-category {        /* TODO */
   margin: 0 0.1em;
   padding: 0.3em 1em;
   color: #fff;
@@ -270,7 +279,7 @@ footer .pure-menu-link:hover {
   margin: 1em 0;
 }
 
-.post-image-meta {
+.post-image-meta {        /* TODO */
   margin-top: -3.5em;
   margin-left: 1em;
   color: #fff;
@@ -283,7 +292,7 @@ footer .pure-menu-link:hover {
 }
 
 .post-description {
-  color: black;
+  color: #b3b1ad;  /* done */
   line-height: 1.8em;
   margin-top: -15px;
 }
@@ -296,7 +305,7 @@ footer .pure-menu-link:hover {
 
 .archive-links a,
 .tags a {
-  color: #376a8c;
+  color: #53bdfa;  /* done */
 }
 
 /* AUTHOR */
@@ -405,11 +414,11 @@ footer .pure-menu-link:hover {
   text-decoration: underline;
   font-size: 48px;
   margin-bottom: 0px;
-  color: #222;
+  color: #b3b1ad;  /* done */
 }
 
 .jekyll-header:hover {
-  color: #6f1f91;
+  color: #0a0e14;  /* done */
 }
 
 .content {
@@ -447,10 +456,10 @@ footer ul {
   font-size: 18px;
   font-weight: 600;
   padding: 7px 10px;
-  border-right: 1px grey solid;
+  border-right: 1px #b3b1ad solid;  /* done */
   margin-left: -4px;
   text-decoration: none;
-  color: #333;
+  color: #b3b1ad;  /* done */
   margin-top: 10px;
 }
 
@@ -459,8 +468,8 @@ footer ul {
 }
 
 .menu a:hover {
-  background-color: #eee;
-  color: #000;
+  background-color: #b3b1ad;  /* done */
+  color: #0a0e14;  /* done */
 }
 
 .about,
@@ -474,27 +483,27 @@ footer ul {
 }
 
 .about i {
-  color: #333;
+  color: #90e1c6;  /* done */
 }
 
 .hashtags i {
-  color: #6f1f91;
+  color: #91b362;  /* done */
 }
 
 .categories i {
-  color: #3878a0;
+  color: #fae994;  /* done */
 }
 
 .archive i {
-  color: #56712d;
+  color: #ea6c73;  /* done */
 }
 
 .rss i {
-  color: #cfa531;
+  color: #f9af4f;  /* done */
 }
 
 .donate i {
-  color: #da6064;
+  color: #59c2ff;  /* done */
 }
 
 /* SEARCH */
@@ -506,15 +515,17 @@ footer ul {
 }
 
 #results-container {
-  border: 1px solid black;
+  border: 1px solid #0a0e14; /* done */
 }
 
 #search-input {
   width: 94%;
   margin: 10px 0;
   padding: 5px;
-  border: 1px #ccc solid;
+  border: 1px #b3b1ad solid;  /* done */
   border-radius: 8px;
+  background-color: #0a0e14;  /* new */
+  color: #b3b1ad; /* new */
 }
 
 .search-icon {
