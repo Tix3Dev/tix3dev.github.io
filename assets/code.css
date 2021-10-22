@@ -1,3 +1,5 @@
+/* only colors with "done" tag changed -> experimental, not tested */
+
 .highlight table td {
     padding: 5px;
 }
@@ -9,6 +11,7 @@
 .highlight,
 .highlight .w {
     color: #586e75;
+    background: #0a0e14;  /* done */
 }
 
 .highlight .err {
@@ -21,11 +24,11 @@
 .highlight .cm,
 .highlight .c1,
 .highlight .cs {
-    color: #657b83;
+    color: #acb6bf;  /* done */
 }
 
 .highlight .cp {
-    color: #b58900;
+    color: #ff8f40;  /* done */
 }
 
 .highlight .nt {
@@ -34,12 +37,12 @@
 
 .highlight .o,
 .highlight .ow {
-    color: #93a1a1;
+    color: #f29668;  /* done */
 }
 
 .highlight .p,
 .highlight .pi {
-    color: #93a1a1;
+    color: #cbccc6;  /* done - special color */
 }
 
 .highlight .gi {
@@ -61,7 +64,7 @@
 .highlight .kp,
 .highlight .kr,
 .highlight .kv {
-    color: #6c71c4;
+    color: #ff8f40;  /* done */
 }
 
 .highlight .kc {
@@ -69,11 +72,11 @@
 }
 
 .highlight .kt {
-    color: #cb4b16;
+    color: #39bae6;  /* done */
 }
 
 .highlight .kd {
-    color: #cb4b16;
+    color: #39bae6; /* done */
 }
 
 .highlight .s,
@@ -84,7 +87,7 @@
 .highlight .sh,
 .highlight .sx,
 .highlight .s1 {
-    color: #859900;
+    color: #aad94c;  /* done */
 }
 
 .highlight .sr {
@@ -123,7 +126,7 @@
 .highlight .mo,
 .highlight .mb,
 .highlight .mx {
-    color: #859900;
+    color: #d2a6ff;  /* done */
 }
 
 .highlight .ss {
