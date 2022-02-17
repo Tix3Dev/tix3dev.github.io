@@ -2,8 +2,8 @@
 tags: community
 ---
 
-Just a quick note which is only relevant to you if you happen to be a German speaker and
-interested in low-level development.<br/>
+Just a quick note which is only relevant to you if you happen to speak German and
+are interested in low-level development.<br/>
 
 Still here? Great! 🥳<br/>
 
