@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Using OSDev-related documentation"
-date: 2021-10-21
+date: 2022-02-17
 tags:
   -  OSDev
   -  Programming
