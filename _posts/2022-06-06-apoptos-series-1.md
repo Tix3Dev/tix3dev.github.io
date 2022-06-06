@@ -32,7 +32,3 @@ _NOTE: All the blog posts are treated as snapshots in time, meaning I won't upda
 
 ## Next
 Link
-
-## References
-
-- https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
