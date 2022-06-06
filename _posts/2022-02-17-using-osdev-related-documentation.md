@@ -4,13 +4,12 @@ title: "Using OSDev-related documentation"
 date: 2022-02-17
 tags:
   -  OSDev
-  -  Programming
 author: Yves Vollmeier
 avatar: assets/profile-sm.png
 category: Programming
 ---
 
-## Foreword:
+## Foreword
 
 It can be a quite daunting task for newcomers to the OSDev world to read documentation like the Intel System Programming Guide or UEFI specifications.
 Even once the desired part is found in the sheer endless documentation, it's still hard to make use of those technical information's.

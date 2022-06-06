@@ -1,5 +1,5 @@
 ---
-tags: community
+tags: Community
 ---
 
 Just a quick note which is only relevant to you if you happen to speak German and
