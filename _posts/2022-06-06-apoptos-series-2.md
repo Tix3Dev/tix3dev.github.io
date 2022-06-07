@@ -49,11 +49,80 @@ A cache consists of a linked list of so called slabs. If one slab happens to be 
 
 A slab itself consists of a freelist or in other words a linked list of control buffers (bufctl).
 
-There are some restrictions though, as the maximum size for a cached object is 512 bytes (so called small slabs). `malloc` solves this problem as we will see later.
+There are some restrictions though, as the maximum size for a cached object is 512 bytes (so called small slabs). If you want to know more about this issue, please consult the paper by Jeff Bonwick. `malloc` solves this problem as we will see later.
 
 Now let's learn how to use the slab allocator:
 
-TODO
+First, we are going to use slab_cache_create to create a cache for a specific task, in this example inodes for a filesystem.
+```c
+slab_cache_t *slab_cache_create(const char *name, size_t slab_size, slab_flags_t flags);
+```
+
+```c
+// create a cache where each slab is 64 bytes in size, the cache has a description for 
+// debugging: "filesystem inodes" and flags to panic if any problem occurs
+
+slab_cache_t *filesystem_inode_cache = slab_cache_create("filesystem inodes", 64, SLAB_PANIC);
+```
+
+Now to allocate an object of size 64 from the newly created cache, we will use the follwing function:
+```c
+void *slab_cache_alloc(slab_cache_t *cache, slab_flags_t flags);
+```
+It might look something like this:
+```c
+// create a cache where each slab is 64 bytes in size, the cache has a description for 
+// debugging: "filesystem inodes" and flags to panic if any problem occurs
+
+slab_cache_t *filesystem_inode_cache = slab_cache_create("filesystem inodes", 64, SLAB_PANIC);
+
+// allocate an object from the cache, set flags to panic if any problem occurs
+// and automatically grow the cache if it runs out of slabs
+
+void *inode_ptr_1 = slab_cache_alloc(filesystem_inode_cache, SLAB_PANIC | SLAB_AUTO_GROW);
+```
+
+_NOTE: We can also manually grow or reap the cache, by using the corresponding functions:_
+```c
+void slab_cache_grow(slab_cache_t *cache, size_t count, slab_flags_t flags);
+```
+```c
+void slab_cache_reap(slab_cache_t *cache, slab_flags_t flags);
+```
+
+To free our freshly allocated object, we will use the following function:
+```c
+void slab_cache_free(slab_cache_t *cache, void *pointer, slab_flags_t flags);
+```
+
+Our final code might look something like this - I've also added a pretty neat debugging tool, to dump the cache:
+```c
+void slab_cache_dump(slab_cache_t *cache, slab_flags_t flags);
+```
+->
+```c
+// create a cache where each slab is 64 bytes in size, the cache has a description for 
+// debugging: "filesystem inodes" and flags to panic if any problem occurs
+
+slab_cache_t *filesystem_inode_cache = slab_cache_create("filesystem inodes", 64, SLAB_PANIC);
+
+// allocate an object from the cache, set flags to panic if any problem occurs
+// and automatically grow the cache if it runs out of slabs
+
+void *inode_ptr_1 = slab_cache_alloc(filesystem_inode_cache, SLAB_PANIC | SLAB_AUTO_GROW);
+
+// let's check how our cache looks like at the moment
+
+slab_cache_dump(filesystem_inode_cache, SLAB_PANIC);
+
+// do something nice with inode_ptr_1 :D
+
+// we don't need our object anymore, so let's free it
+
+slab_cache_free(filesystem_inode_cache, inode_ptr_1, SLAB_PANIC);
+```
+
+And that's how easy it is to use the slab allocator in apoptOS!
 
 ## Virtual memory management
 ~vmm memory map~
