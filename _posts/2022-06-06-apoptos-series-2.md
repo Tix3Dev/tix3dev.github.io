@@ -234,6 +234,9 @@ Last but not least, I'd like to show how I've implemented the heap in more detai
 
 And that's the whole deal with memory. Of course, everything is very basic, but for now it wouldn't make sense to implement more, instead let's start adding more features to apoptOS!
 
+## Next
+[-](https://tix3dev.github.io/apoptos-series-2)
+
 ## References
 
 - https://github.com/Tix3Dev/apoptOS/blob/9a4fde1fe18abb4fb91d89a29ae21bde7c0cbea5/src/kernel/memory/physical/pmm.c

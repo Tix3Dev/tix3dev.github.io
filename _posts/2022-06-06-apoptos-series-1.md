@@ -31,4 +31,4 @@ In this series of blog posts, I will document milestones regarding the developme
 _NOTE: All the blog posts are treated as snapshots in time, meaning I won't update e.g. a list of features currently available._
 
 ## Next
-Link
+[Milestone - Memory management](https://tix3dev.github.io/apoptos-series-2)
