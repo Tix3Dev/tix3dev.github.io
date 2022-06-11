@@ -177,7 +177,7 @@ uint64_t *vmm_get_root_page_table(void);
 ```
 
 ## Heap memory
-Sometimes we don't want to allocate a whole page with `pmm_alloc` or create a slab cache and allocate from it via `slab_cache_alloc`. That might be because we don't want to waste one whole page for a small allocation, so we'd have to use the slab allocator, but then the sizes might change, so we'd have to create many caches. To fix this issue, apoptOS provides a generic interface, where we don't have to initialize anything before an allocation. The size we want to allocate can also be anything arbitrary.
+Sometimes we don't want to allocate a whole page with `pmm_alloc` or create a slab cache and allocate from it via `slab_cache_alloc`. That might be because we don't want to waste one whole page for a small allocation, so we'd have to use the slab allocator, but then the sizes might change, so we'd have to create a lot of caches. To fix this issue, apoptOS provides a generic interface, where we don't have to initialize anything before an allocation. The size we want to allocate can also be anything arbitrary.
 
 TL;DR apoptOS provides a heap interface through `malloc` and `free`.
 
@@ -195,10 +195,10 @@ and
 void free(void *pointer);
 ```
 
-Addresses returned by malloc are always from the heap memory region at 0xFFFF900000000000 (see memory layout in Virtual memory). 
+Addresses returned by malloc are always from the heap memory region at 0xFFFF900000000000 (see memory layout in "Virtual memory management"). 
 
 ### Detailed implementation
-Last but not least, I'd like to show how I've implemented the heap in more detail, as I've come up with a quite unique way. I haven't done any benchmarks yet, but at the moment this allocator will suffise time and efficiency wise. The slab allocator might also be changed in the future to also use large slabs, so this design won't be needed anymore. Simplicity-wise I can only recommend it!
+Last but not least, I'd like to show how I've implemented the heap in more detail, as I've come up with a quite unique concept. I haven't done any benchmarks on it yet, but at the moment this allocator will suffice time and efficiency wise. The slab allocator might also be changed in the future to also use large slabs, so this design won't be needed anymore. Simplicity-wise I can only recommend it!
 
 1. `malloc` is a mix between the bitmap based page frame allocator and the slab allocator. Former of which is used for allocations above 512 bytes, latter of which is used for allocations below 512 bytes.
 2. `malloc_heap_init` will create 8 caches, with sizes being power of two, starting with 4 and ending with 512. apoptOS uses 4 as the smallest possible size, as there will always be metadata, which is 2 bytes already.
@@ -206,7 +206,7 @@ Last but not least, I'd like to show how I've implemented the heap in more detai
 
     -> size <= 512:
       - Update size by adding the size of the metadata struct
-      - Convert updated size to index that'll be used to access the array of slab caches (e.g. size=5 -> index=1 (corresponding to slab size 8))
+      - Convert updated size to index that'll be used to access the array of slab caches (e.g., size=5 -> index=1 (corresponding to slab size 8))
 
     _NOTE: This conversion is done by:_
     ```c
