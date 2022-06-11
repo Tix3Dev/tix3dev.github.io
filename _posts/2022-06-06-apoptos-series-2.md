@@ -10,13 +10,13 @@ category: apoptOS-Series
 ---
 
 ## Foreword
-In this blog post I will talk about the concepts used by the memory management parts in apoptOS and how to use them.
+In this blog post I will talk about the concepts for memory management in apoptOS and how to use them.
 
 ## Physical memory management
 Generally speaking, this part is in charge of managing actual memory in RAM, i.e. the addresses used here directly correspond to memory in RAM. In order to manage that kind of memory, physical memory, we need to know how the bootloader, [Limine](https://github.com/limine-bootloader/limine), set up the memory map. To get this information, we can use the `stivale2_struct_tag_memmap` struct provided by the [stivale2 boot protocol](https://github.com/stivale/stivale).
 
 ### Bitmap based page frame allocator
-Now that we know where the usable entries / memory locations are, we can store those informations in a data structure. apoptOS makes use of a bitmap (allocator), where each bit in the bitmap corresponds to a page / block of memory (hence the name page frame allocator) through a mapping system. The value of a bit says if it's corresponding page is free or used. Note that in apoptOS pages are 4 KiB big.
+Now that we know where the usable entries / memory locations are, we can store those informations in a data structure. apoptOS makes use of a bitmap (hence the name bitmap based allocator), where each bit in the bitmap corresponds to a page / block of memory (hence the name page frame allocator) through a mapping system. The value of a bit says if it's corresponding page is free or used. Note that in apoptOS pages are 4 KiB in size.
 
 Before we can allocate or free anything, we need to initialize it with this function:
 ```c
@@ -32,6 +32,7 @@ or preferably this:
 ```c
 void *pmm_allocz(size_t page_count);
 ```
+Which does the same thing as `pmm_alloc` except it also memsets the memory returned to zero (-> "clean memory" -> should be preferred).
 
 Allocating consists of finding a free bit in the bitmap, setting it to used and returning the corresponding memory.
 
@@ -49,7 +50,7 @@ A cache consists of a linked list of so called slabs. If one slab happens to be 
 
 A slab itself consists of a freelist or in other words a linked list of control buffers (bufctl).
 
-There are some restrictions though, as the maximum size for a cached object is 512 bytes (so called small slabs). If you want to know more about this issue, please consult the paper by Jeff Bonwick. `malloc` solves this problem as we will see later.
+There are some restrictions though, as the maximum size for a cached object is 512 bytes (so called small slabs). If you want to know more about this issue, please consult the paper by Jeff Bonwick. `malloc` solves this problem as we'll see later.
 
 Now let's learn how to use the slab allocator:
 
@@ -125,17 +126,120 @@ slab_cache_free(filesystem_inode_cache, inode_ptr_1, SLAB_PANIC);
 And that's how easy it is to use the slab allocator in apoptOS!
 
 ## Virtual memory management
-~vmm memory map~
+The basic idea of virtual memory is to have a bigger address space, ranging (in our case) from 0x0 to 0xFFFFFFFFFFFFFFFF. To get from virtual memory to physical memory, we use a mapping system. On x86_64 we are provided with paging. In apoptOS, to be specific, we make use of 4-level paging. I won't go into the details of how paging works, but instead how to use the interface.
 
-~how to interface it~
+To initialize paging and map all memory regions, we'll use:
+```c
+void vmm_init(struct stivale2_struct *stivale2_struct);
+```
+
+The resulting virtual memory layout looks like this:
+```
+First 4 GiB identical:
+0x0 - 0x100000000 mapped to 0x0 - 0x100000000
+
+First 4 GiB for higher half data:
+0xFFFF800000000000 - 0xFFFF800100000000 mapped to 0x0 - 0x100000000
+
+First 4 GiB for heap:
+0xFFFF900000000000 - 0xFFFF900100000000 mapped to 0x0 - 0x100000000 
+
+First 2 GiB for higher half code:
+0xFFFFFFFF80000000 - 0x0001000000000000 mapped to 0x0 - 0x80000000 
+
+All memory map entries:
+At higher half data start to all entries in memory map 
+```
+
+To just map a page, we can use:
+```c
+void vmm_map_page(uint64_t *page_table, uint64_t phys_page, uint64_t virt_page, uint64_t flags);
+```
+
+And to unmap a page:
+```c
+void vmm_unmap_page(uint64_t *page_table, uint64_t virt_page);
+```
+
+We can also map a whole range using:
+```c
+void vmm_map_range(uint64_t *page_table, uint64_t start, uint64_t end, uint64_t offset, uint64_t flags);
+```
+
+And to unmap a whole range:
+```c
+void vmm_unmap_range(uint64_t *page_table, uint64_t start, uint64_t end);
+```
+
+Whenever we need to map something outside of `src/kernel/memory/virtual/vmm.c`, we'll need to know the address of the root page table. To get it, we have to use:
+```c
+uint64_t *vmm_get_root_page_table(void);
+```
 
 ## Heap memory
-intro
+Sometimes we don't want to allocate a whole page with `pmm_alloc` or create a slab cache and allocate from it via `slab_cache_alloc`. That might be because we don't want to waste one whole page for a small allocation, so we'd have to use the slab allocator, but then the sizes might change, so we'd have to create many caches. To fix this issue, apoptOS provides a generic interface, where we don't have to initialize anything before an allocation. The size we want to allocate can also be anything arbitrary.
 
-~how to interface it~
+TL;DR apoptOS provides a heap interface through `malloc` and `free`.
+
+In `src/kernel/kernel.c` - `kinit_all`  the following is already called, so this function will never have to be used again:
+```c
+void malloc_heap_init(void);
+```
+
+Allocations and frees from now on are as easy as:
+```c
+void *malloc(size_t size);
+```
+and
+```c
+void free(void *pointer);
+```
+
+Addresses returned by malloc are always from the heap memory region at 0xFFFF900000000000 (see memory layout in Virtual memory). 
+
+### Detailed implementation
+Last but not least, I'd like to show how I've implemented the heap in more detail, as I've come up with a quite unique way. I haven't done any benchmarks yet, but at the moment this allocator will suffise time and efficiency wise. The slab allocator might also be changed in the future to also use large slabs, so this design won't be needed anymore. Simplicity-wise I can only recommend it!
+
+1. `malloc` is a mix between the bitmap based page frame allocator and the slab allocator. Former of which is used for allocations above 512 bytes, latter of which is used for allocations below 512 bytes.
+2. `malloc_heap_init` will create 8 caches, with sizes being power of two, starting with 4 and ending with 512. apoptOS uses 4 as the smallest possible size, as there will always be metadata, which is 2 bytes already.
+3. `malloc` will check if the requested size is below or above 512 (to use the appropriate allocator).
+
+    -> size <= 512:
+      - Update size by adding the size of the metadata struct
+      - Convert updated size to index that'll be used to access the array of slab caches (e.g. size=5 -> index=1 (corresponding to slab size 8))
+
+    _NOTE: This conversion is done by:_
+    ```c
+    size_t get_slab_cache_index(size_t size);
+    ```
+    _Which is a very efficient algorithm (the conditions only), compromising looks of the code. See repo for details._
+      - Allocate memory with slab allocator (argument=index)
+      - Put metadata struct at beginning of allocated memory - Metadata contains slab caches index
+
+    -> size > 512
+      - Update size by adding the size of the metadata struct and page aligning it
+      - Convert udpated size to page count
+      - Allocate memory with bitmap based page frame allocator (argument=page count)
+      - Put metadata struct at beginning of allocated memory - Metadata contains page count
+
+4. `free` will check if the pointer ends with 0xFFF bits by bitwise ANDing
+
+    -> not true
+      - Get slab caches index from metadata at pointer passed as argument
+      - Free memory with slab allocator (argument=index)
+
+    -> true
+      - Get page count from metadata at pointer passed as argument
+      - Free memory with bitmap based page frame allocator (argument=page count)
+
+And that's the whole deal with memory. Of course, everything is very basic, but for now it wouldn't make sense to implement more, instead let's start adding more features to apoptOS!
 
 ## References
 
+- https://github.com/Tix3Dev/apoptOS/blob/9a4fde1fe18abb4fb91d89a29ae21bde7c0cbea5/src/kernel/memory/physical/pmm.c
+- https://github.com/Tix3Dev/apoptOS/blob/9a4fde1fe18abb4fb91d89a29ae21bde7c0cbea5/src/kernel/memory/virtual/vmm.c
+- https://github.com/Tix3Dev/apoptOS/blob/9a4fde1fe18abb4fb91d89a29ae21bde7c0cbea5/src/kernel/memory/dynamic/slab.c
+- https://github.com/Tix3Dev/apoptOS/blob/9a4fde1fe18abb4fb91d89a29ae21bde7c0cbea5/src/kernel/libk/malloc/malloc.c
 - https://github.com/limine-bootloader/limine
 - https://github.com/stivale/stivale
 - https://people.eecs.berkeley.edu/~kubitron/courses/cs194-24-S14/hand-outs/bonwick_slab.pdf
