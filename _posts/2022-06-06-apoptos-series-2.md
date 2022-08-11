@@ -212,7 +212,7 @@ Last but not least, I'd like to show how I've implemented the heap in more detai
     ```c
     size_t get_slab_cache_index(size_t size);
     ```
-    _Which is a very efficient algorithm (the conditions only), compromising looks of the code. See repo for details._
+    _Which is a very efficient algorithm (three conditions only), compromising looks of the code. See repo for details._
       - Allocate memory with slab allocator (argument=index)
       - Put metadata struct at beginning of allocated memory - Metadata contains slab caches index
 
